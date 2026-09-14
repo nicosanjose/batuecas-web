@@ -7,6 +7,13 @@
 <meta name="description" content="Valora tu vivienda en Madrid gratis y sin compromiso. Precio real de mercado, sin cifras infladas para captarte.">
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="styles.css">
+<style>
+  /* asymmetric two-column layout for the copy + form; must collapse to
+     one column on mobile like the default .grid-2 does, which an
+     inline grid-template-columns would otherwise block */
+  .valuation-grid{grid-template-columns:1fr 1.2fr;}
+  @media (max-width:640px){ .valuation-grid{grid-template-columns:1fr;} }
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -17,7 +24,7 @@
     <nav class="main-links">
       <a href="index.html">Inicio</a>
       <a href="pisos-turisticos.html">Pisos turísticos</a>
-      <a href="inmobiliaria.html">Inmobiliaria</a>
+      <a href="inmobiliaria.html" class="active">Inmobiliaria</a>
       <a href="reformas.html">Reformas</a>
       <a href="servicios-tarifas.html">Servicios y tarifas</a>
       <a href="blog.html">Blog</a>
@@ -45,7 +52,7 @@
   </div>
 
   <section id="formulario">
-    <div class="container grid-2" style="grid-template-columns:1fr 1.2fr; align-items:start;">
+    <div class="container grid-2 valuation-grid" style="align-items:start;">
       <div class="reveal">
         <h2 style="margin-bottom:16px;">Gestionamos turísticamente tu vivienda mientras la vendes</h2>
         <p>Ofrecemos al comprador un negocio seguro y rentabilizamos su inversión mientras se cierra la operación.</p>

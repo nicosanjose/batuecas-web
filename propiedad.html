@@ -7,6 +7,13 @@
 <meta name="description" content="Ático rústico de 5 habitaciones en Barrio La Latina, Madrid. Gestionado por Batuecas Real Estate.">
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="styles.css">
+<style>
+  /* asymmetric two-column layout for the listing body + booking panel;
+     must collapse to one column on mobile like the default .grid-2 does,
+     which an inline grid-template-columns would otherwise block */
+  .listing-grid{grid-template-columns:1.6fr 1fr;}
+  @media (max-width:640px){ .listing-grid{grid-template-columns:1fr;} }
+</style>
 </head>
 <body>
 <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -50,7 +57,7 @@
         </div>
       </div>
 
-      <div class="grid-2" style="grid-template-columns:1.6fr 1fr; align-items:start; gap:56px;">
+      <div class="grid-2 listing-grid" style="align-items:start; gap:56px;">
         <div class="reveal">
           <h2 style="margin-bottom:18px;">El espacio</h2>
           <p>Disfruta de un elegante ático abuhardillado en pleno Barrio de La Latina, a pocos minutos de Puerta de Toledo y del Mercado de la Cebada. El estilo rústico madrileño se combina con detalles renovados: vigas de madera originales, suelos en tarima y una distribución pensada para grupos y familias.</p>
