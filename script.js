@@ -4,7 +4,7 @@ const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 (function () {
   const header = document.querySelector('header.site');
   if (!header) return;
-  const hasHero = !!document.querySelector('.build-scroll');
+  const hasHero = !!document.querySelector('.hero-video');
   if (!hasHero) {
     header.classList.add('solid');
     return;
@@ -66,9 +66,26 @@ const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   });
 })();
 
+/* ---------- showcase: click a project on the left, its photo
+   slides in on the right (reformas section) ---------- */
+(function () {
+  const showcase = document.querySelector('.showcase');
+  if (!showcase) return;
+  const items = showcase.querySelectorAll('.showcase-item');
+  const panels = showcase.querySelectorAll('.showcase-panel img');
+  items.forEach((item) => {
+    item.addEventListener('click', () => {
+      items.forEach((i) => i.classList.remove('active'));
+      panels.forEach((p) => p.classList.remove('active'));
+      item.classList.add('active');
+      const target = showcase.querySelector('.showcase-panel img[data-key="' + item.dataset.key + '"]');
+      target?.classList.add('active');
+    });
+  });
+})();
+
 /* ============================================================
-   GSAP + Lenis: smooth scroll, generic reveals, and the
-   photographic "villa being built" scroll sequence in the hero.
+   GSAP + Lenis: smooth scroll and generic scroll reveals.
    ============================================================ */
 (function () {
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
@@ -103,42 +120,14 @@ const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     });
   });
 
-  // ---------------- Villa build sequence ----------------
-  const scrollSection = document.querySelector('.build-scroll');
-  if (!scrollSection) return;
-
-  const images = gsap.utils.toArray('.build-img');
-  const captions = gsap.utils.toArray('.build-caption');
-  const dots = gsap.utils.toArray('.build-dots i');
-  const cue = document.querySelector('.build-scrollcue');
-
-  if (REDUCE || images.length < 2) return; // CSS fallback already shows a static state
-
-  gsap.set(images, { scale: 1.08 });
-  gsap.set(images[0], { scale: 1 });
-
-  const tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: scrollSection,
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: 0.6,
-      pin: '.build-pin',
-      anticipatePin: 1,
-      onUpdate: (self) => { if (cue) cue.style.opacity = self.progress > 0.03 ? '0' : '1'; },
-    },
-  });
-
-  const steps = images.length - 1;
-  for (let i = 0; i < steps; i++) {
-    const at = i;
-    tl.to(images[i], { opacity: 0, scale: 1.08, duration: 1, ease: 'power1.inOut' }, at)
-      .to(images[i + 1], { opacity: 1, scale: 1, duration: 1, ease: 'power1.inOut' }, at)
-      .to(captions[i], { opacity: 0, y: -18, duration: 0.35 }, at)
-      .to(captions[i + 1], { opacity: 1, y: 0, duration: 0.35 }, at + 0.55)
-      .call(() => {
-        dots.forEach((d) => d.classList.remove('on'));
-        dots[at + 1]?.classList.add('on');
-      }, null, at + 0.55);
+  // Subtle Ken Burns zoom-out on the full-viewport feature slide,
+  // tied to its own scroll position rather than the whole page.
+  if (!REDUCE) {
+    document.querySelectorAll('.feature-slide img').forEach((img) => {
+      gsap.fromTo(img, { scale: 1.15 }, {
+        scale: 1, ease: 'none',
+        scrollTrigger: { trigger: img.closest('.feature-slide'), start: 'top bottom', end: 'top top', scrub: true },
+      });
+    });
   }
 })();
