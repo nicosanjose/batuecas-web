@@ -11,7 +11,7 @@ const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     return;
   }
   const condensedThreshold = 80; // condense almost as soon as you start scrolling
-  const solidThreshold = () => window.innerHeight * 1.82; // past hero + feature-slide, into the light sections
+  const solidThreshold = () => window.innerHeight * 0.92; // just before leaving the hero, into the white build-reveal section
   const onScroll = () => {
     header.classList.toggle('condensed', window.scrollY > condensedThreshold);
     header.classList.toggle('solid', window.scrollY > solidThreshold());
@@ -94,6 +94,10 @@ const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       el.style.opacity = '1';
       el.style.transform = 'none';
     });
+    document.querySelector('.build-exploded')?.style.setProperty('display', 'none');
+    document.querySelectorAll('.build-assembled, .build-text').forEach((el) => {
+      el.style.opacity = '1';
+    });
     return;
   }
   gsap.registerPlugin(ScrollTrigger);
@@ -119,14 +123,23 @@ const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     });
   });
 
-  // Subtle Ken Burns zoom-out on the full-viewport feature slide,
-  // tied to its own scroll position rather than the whole page.
-  if (!REDUCE) {
-    document.querySelectorAll('.feature-slide img').forEach((img) => {
-      gsap.fromTo(img, { scale: 1.15 }, {
-        scale: 1, ease: 'none',
-        scrollTrigger: { trigger: img.closest('.feature-slide'), start: 'top bottom', end: 'top top', scrub: true },
-      });
-    });
+  // Build reveal: pin the stage while scrolling through it, crossfade the
+  // exploded materials into the finished home, then wipe in the two text
+  // blocks left-to-right. Skipped for reduced motion — final state shown
+  // directly instead (see the REDUCE branch below).
+  const buildStage = document.querySelector('.build-stage');
+  if (buildStage && !REDUCE) {
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: '.build-reveal', start: 'top top', end: '+=250%', pin: buildStage, scrub: 0.4,
+      },
+    })
+      .to('.build-exploded', { opacity: 0, scale: 0.88, ease: 'none' }, 0)
+      .fromTo('.build-assembled', { opacity: 0, scale: 1.1 }, { opacity: 1, scale: 1, ease: 'none' }, 0)
+      .fromTo('.build-text-tl', { clipPath: 'inset(0 100% 0 0)', opacity: 1 }, { clipPath: 'inset(0 0% 0 0)', ease: 'none' }, 0.55)
+      .fromTo('.build-text-br', { clipPath: 'inset(0 100% 0 0)', opacity: 1 }, { clipPath: 'inset(0 0% 0 0)', ease: 'none' }, 0.72);
+  } else if (buildStage) {
+    document.querySelector('.build-exploded').style.display = 'none';
+    document.querySelectorAll('.build-assembled, .build-text').forEach((el) => { el.style.opacity = '1'; });
   }
 })();

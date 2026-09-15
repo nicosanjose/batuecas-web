@@ -295,18 +295,27 @@ input:focus, select:focus, textarea:focus{outline:none; border-color:var(--maroo
 @media (max-width:720px){ .hero-content{padding-bottom:40px;} .hero-content-row{align-items:flex-start;} }
 
 /* ============================================================
-   FEATURE SLIDE — full-viewport moment reached by scrolling
+   BUILD REVEAL — pinned scroll: exploded materials resolve into the
+   finished home, then two text blocks wipe in left-to-right
    ============================================================ */
-.feature-slide{position:relative; height:100vh; min-height:600px; padding-block:0; overflow:hidden; display:flex; align-items:flex-end;}
-.feature-slide img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
-.feature-scrim{position:absolute; inset:0; background:linear-gradient(0deg, rgba(20,16,9,.82) 0%, rgba(20,16,9,.25) 55%, rgba(20,16,9,.15) 100%);}
-.feature-body{position:relative; z-index:2; width:100%; padding-bottom:90px;}
-.feature-body .eyebrow{color:var(--gold);}
-.feature-body h2{color:var(--cream); font-size:clamp(2.1rem,4.6vw,3.6rem); max-width:14ch;}
-.feature-body p{color:var(--cream-soft); max-width:48ch;}
-.feature-stat{font-family:'Archivo',sans-serif; font-weight:800; font-size:clamp(2.6rem,6vw,4.4rem); color:var(--cream); line-height:1; margin-bottom:6px;}
-.feature-grid{display:grid; grid-template-columns:1.3fr 1fr; gap:40px; align-items:end;}
-@media (max-width:800px){ .feature-grid{grid-template-columns:1fr;} .feature-body{padding-bottom:60px;} }
+.build-reveal{position:relative; background:#fff;}
+.build-stage{position:relative; height:100vh; min-height:600px; overflow:hidden; display:grid; place-items:center;}
+.build-img{position:absolute; object-fit:contain;}
+.build-exploded{width:min(1000px,82vw); max-height:70vh;}
+.build-assembled{width:min(460px,40vw); max-height:40vh; border-radius:var(--r-m); opacity:0;}
+.build-text{position:absolute; max-width:320px; opacity:0;}
+.build-text .eyebrow{color:var(--maroon);}
+.build-text h2{font-size:clamp(1.7rem,3.2vw,2.5rem); margin:10px 0 0; color:var(--ink);}
+.build-text p{font-size:1.05rem; color:var(--ink-soft); margin:0;}
+.build-text-tl{top:14%; left:8%;}
+.build-text-br{bottom:16%; right:8%; text-align:right;}
+@media (max-width:760px){
+  .build-exploded{width:92vw; max-height:46vh;}
+  .build-assembled{width:56vw; max-height:30vh;}
+  .build-text{max-width:220px; font-size:.92rem;}
+  .build-text-tl{top:8%; left:6%;}
+  .build-text-br{bottom:10%; right:6%;}
+}
 
 /* ============================================================
    SECTORES — three business lines, relats-style count tiles
