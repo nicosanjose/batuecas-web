@@ -284,7 +284,7 @@ input:focus, select:focus, textarea:focus{outline:none; border-color:var(--maroo
 /* ============================================================
    HERO — full-bleed video
    ============================================================ */
-.hero-video{position:relative; height:100vh; min-height:640px; overflow:hidden; background:var(--void) url('assets/build/05-final.jpg') center/cover;}
+.hero-video{position:relative; height:100vh; min-height:640px; padding-block:0; overflow:hidden; background:var(--void) url('assets/build/05-final.jpg') center/cover;}
 .hero-video video{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 1.6s ease;}
 .hero-video video.active{opacity:1;}
 .hero-scrim{position:absolute; inset:0; background:linear-gradient(180deg, rgba(20,16,9,.55) 0%, rgba(20,16,9,.2) 40%, rgba(20,16,9,.8) 100%); pointer-events:none;}
@@ -302,7 +302,7 @@ input:focus, select:focus, textarea:focus{outline:none; border-color:var(--maroo
 /* ============================================================
    FEATURE SLIDE — full-viewport moment reached by scrolling
    ============================================================ */
-.feature-slide{position:relative; height:100vh; min-height:600px; overflow:hidden; display:flex; align-items:flex-end;}
+.feature-slide{position:relative; height:100vh; min-height:600px; padding-block:0; overflow:hidden; display:flex; align-items:flex-end;}
 .feature-slide img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
 .feature-scrim{position:absolute; inset:0; background:linear-gradient(0deg, rgba(20,16,9,.82) 0%, rgba(20,16,9,.25) 55%, rgba(20,16,9,.15) 100%);}
 .feature-body{position:relative; z-index:2; width:100%; padding-bottom:90px;}
