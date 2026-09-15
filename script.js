@@ -32,7 +32,7 @@ const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const burger = document.querySelector('.burger');
   if (!burger) return;
   burger.addEventListener('click', () => document.body.classList.toggle('nav-open'));
-  document.querySelectorAll('nav.main-links a').forEach((a) =>
+  document.querySelectorAll('.nav-overlay a').forEach((a) =>
     a.addEventListener('click', () => document.body.classList.remove('nav-open'))
   );
 })();

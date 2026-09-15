@@ -32,36 +32,9 @@
   --r-s:8px; --r-m:16px; --r-l:26px;
   --maxw:1280px;
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --paper:#141009;
-    --paper-raised:#1F1911;
-    --paper-line:#39301F;
-    --ink:#F3ECDC;
-    --ink-soft:#B7A98D;
-    --maroon:#E2896B;
-    --maroon-bright:#F0A585;
-    --maroon-soft:#3A241F;
-    --blue:#6FC2FF;
-    --blue-bright:#8FD0FF;
-    --gold:#D8C671;
-    --gold-soft:#332D1B;
-  }
-}
-:root[data-theme="dark"]{
-  --paper:#141009;
-  --paper-raised:#1F1911;
-  --paper-line:#39301F;
-  --ink:#F3ECDC;
-  --ink-soft:#B7A98D;
-  --maroon:#E2896B;
-  --maroon-bright:#F0A585;
-  --maroon-soft:#3A241F;
-  --blue:#6FC2FF;
-  --blue-bright:#8FD0FF;
-  --gold:#D8C671;
-  --gold-soft:#332D1B;
-}
+/* brand colors stay fixed regardless of the visitor's OS light/dark setting —
+   this is a real business site, not an app, so the maroon/gold/paper palette
+   must always match the real Batuecas branding, never invert or shift hue */
 
 *{box-sizing:border-box;}
 html{scroll-behavior:auto;}
@@ -146,31 +119,34 @@ header.site.solid .logo-mark{display:block;}
 header.site.solid .logo{background:var(--paper); padding:10px 14px; border-radius:16px; box-shadow:0 4px 16px rgba(27,20,15,.12);}
 .logo-tag{font-family:'DM Mono',monospace; font-size:.58rem; letter-spacing:.08em; text-transform:uppercase; color:var(--cream-soft); transition:color 300ms; white-space:nowrap;}
 
-/* nav.main-links: a full-screen overlay menu by default (opened via the
-   burger), except on desktop while still over the transparent hero, where
-   it shows inline instead */
-nav.main-links{
-  position:fixed; top:0; right:0; bottom:0; left:0; background:var(--paper); z-index:90;
+/* nav.main-links: the inline row shown only on desktop while still over the
+   transparent hero. It never becomes a fixed overlay itself — it just fades
+   in place — so crossing the "solid" threshold never flips its layout mode
+   (that flip is what caused the abrupt flash/jump). */
+.nav-right{display:flex; align-items:center; gap:36px;}
+nav.main-links{display:none; align-items:center; gap:30px; font-size:.92rem; font-weight:500; opacity:1; transition:opacity 200ms;}
+nav.main-links a{color:var(--cream-soft); transition:color 180ms; position:relative; padding:4px 0;}
+nav.main-links a:hover{color:var(--blue-bright);}
+nav.main-links a.active{color:var(--cream);}
+nav.main-links a.active::after{content:""; position:absolute; left:0; right:0; bottom:-4px; height:2px; background:var(--maroon); border-radius:2px;}
+@media (min-width:961px){
+  header.site:not(.solid) nav.main-links{display:flex;}
+  header.site.solid nav.main-links{opacity:0; pointer-events:none;}
+}
+
+/* nav-overlay: the full-screen menu opened by the burger, at every width.
+   Always position:fixed with its own independent opacity transition, tied
+   only to body.nav-open — completely decoupled from the header's scroll
+   state, so opening/closing it is always the same smooth fade. */
+.nav-overlay{
+  position:fixed; inset:0; background:var(--paper); z-index:90;
   display:flex; flex-direction:column; align-items:flex-start; justify-content:center; gap:0;
   padding:0 40px; opacity:0; transform:translateY(-8px); pointer-events:none;
   transition:opacity 220ms, transform 220ms;
 }
-nav.main-links a{width:100%; max-width:360px; padding:16px 0; border-bottom:1px solid var(--paper-line); font-size:1.3rem; font-weight:500; color:var(--ink-soft); position:relative;}
-nav.main-links a:hover{color:var(--maroon);}
-nav.main-links a.active{color:var(--maroon);}
-body.nav-open nav.main-links{opacity:1; transform:translateY(0); pointer-events:auto;}
-
-@media (min-width:961px){
-  header.site:not(.solid) nav.main-links{
-    position:static; background:none; z-index:auto; padding:0;
-    flex-direction:row; align-items:center; gap:30px;
-    opacity:1; transform:none; pointer-events:auto; transition:none;
-  }
-  header.site:not(.solid) nav.main-links a{width:auto; max-width:none; padding:4px 0; border-bottom:none; font-size:.92rem; font-weight:500; color:var(--cream-soft);}
-  header.site:not(.solid) nav.main-links a:hover{color:var(--blue-bright);}
-  header.site:not(.solid) nav.main-links a.active{color:var(--cream);}
-  header.site:not(.solid) nav.main-links a.active::after{content:""; position:absolute; left:0; right:0; bottom:-4px; height:2px; background:var(--maroon); border-radius:2px;}
-}
+.nav-overlay a{width:100%; max-width:360px; padding:16px 0; border-bottom:1px solid var(--paper-line); font-size:1.3rem; font-weight:500; color:var(--ink-soft);}
+.nav-overlay a:hover, .nav-overlay a.active{color:var(--maroon);}
+body.nav-open .nav-overlay{opacity:1; transform:translateY(0); pointer-events:auto;}
 
 /* owner icon + "Contactar" float persistently, never hidden by the burger/menu state */
 .nav-actions{display:flex; align-items:center; gap:18px; position:relative; z-index:100;}
@@ -178,7 +154,7 @@ body.nav-open nav.main-links{opacity:1; transform:translateY(0); pointer-events:
 .nav-owner{display:inline-flex; color:var(--cream-soft); transition:color 180ms;}
 header.site.solid .nav-owner{color:var(--ink-soft);}
 .nav-owner:hover{color:var(--blue-bright);}
-.burger{display:none; background:none; border:none; cursor:pointer; padding:6px;}
+.burger{display:none; background:none; border:none; cursor:pointer; padding:6px; position:relative; z-index:100;}
 .burger span{display:block; width:22px; height:2px; background:var(--cream); margin:5px 0; transition:background 300ms;}
 header.site.solid .burger span{background:var(--ink);}
 @media (min-width:961px){ header.site.solid .burger{display:block;} }
@@ -312,7 +288,7 @@ input:focus, select:focus, textarea:focus{outline:none; border-color:var(--maroo
 .hero-video video{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 1.6s ease;}
 .hero-video video.active{opacity:1;}
 .hero-scrim{position:absolute; inset:0; background:linear-gradient(180deg, rgba(20,16,9,.55) 0%, rgba(20,16,9,.2) 40%, rgba(20,16,9,.8) 100%); pointer-events:none;}
-.hero-content{position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:flex-end; padding-bottom:100px;}
+.hero-content{position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:flex-end; padding-bottom:48px;}
 .hero-content-row{display:flex; justify-content:space-between; align-items:flex-end; gap:40px; flex-wrap:wrap;}
 .hero-text{max-width:440px;}
 .hero-content h1{
@@ -321,7 +297,7 @@ input:focus, select:focus, textarea:focus{outline:none; border-color:var(--maroo
 }
 .hero-content p.lede{color:var(--cream-soft); margin:0; max-width:38ch; font-size:.98rem; text-align:left;}
 .hero-actions{display:flex; gap:12px; flex-wrap:wrap; max-width:100%;}
-@media (max-width:720px){ .hero-content{padding-bottom:80px;} .hero-content-row{align-items:flex-start;} }
+@media (max-width:720px){ .hero-content{padding-bottom:40px;} .hero-content-row{align-items:flex-start;} }
 
 /* ============================================================
    FEATURE SLIDE — full-viewport moment reached by scrolling
