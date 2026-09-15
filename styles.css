@@ -129,37 +129,51 @@ p{margin:0 0 1em; max-width:62ch; color:var(--ink);}
 .btn:focus-visible{outline:2px solid var(--blue-bright); outline-offset:2px;}
 
 /* ---------- header ---------- */
+/* no full-width bar: header itself stays transparent always, the logo and
+   the contact cluster float as their own independent badges/pills instead
+   (relats-style), so the page behind keeps showing through everywhere else */
 header.site{
   position:fixed; top:0; left:0; right:0; z-index:100;
   padding-block:18px;
-  transition:background 300ms, border-color 300ms, padding 300ms;
-  border-bottom:1px solid transparent;
-}
-header.site.solid{
-  background:color-mix(in srgb, var(--paper) 90%, transparent);
-  backdrop-filter:blur(14px);
-  border-color:var(--paper-line);
-  padding-block:12px;
 }
 .nav-row{display:flex; align-items:center; justify-content:space-between; gap:24px;}
-.logo{display:flex; flex-direction:column; align-items:flex-start; gap:5px; line-height:1;}
+.logo{display:flex; flex-direction:column; align-items:flex-start; gap:5px; line-height:1; position:relative; z-index:100; transition:background 220ms, box-shadow 220ms;}
 .logo-full{height:22px; width:auto; transition:filter 300ms;}
-.logo-mark{display:none; height:30px; width:auto;}
+.logo-mark{display:none; height:26px; width:auto;}
 header.site:not(.solid) .logo-full{filter:brightness(0) invert(1);}
 header.site.solid .logo-full, header.site.solid .logo-tag{display:none;}
 header.site.solid .logo-mark{display:block;}
+header.site.solid .logo{background:var(--paper); padding:10px 14px; border-radius:16px; box-shadow:0 4px 16px rgba(27,20,15,.12);}
 .logo-tag{font-family:'DM Mono',monospace; font-size:.58rem; letter-spacing:.08em; text-transform:uppercase; color:var(--cream-soft); transition:color 300ms; white-space:nowrap;}
-nav.main-links, .nav-cta{transition:opacity 240ms ease, transform 240ms ease;}
-header.site.nav-hidden nav.main-links, header.site.nav-hidden .nav-cta{opacity:0; transform:translateY(-10px); pointer-events:none;}
-body.nav-open header.site.nav-hidden nav.main-links{opacity:1; transform:none; pointer-events:auto;}
-nav.main-links{display:flex; align-items:center; gap:30px; font-size:.92rem; font-weight:500;}
-nav.main-links a{color:var(--cream-soft); transition:color 180ms; position:relative; padding:4px 0;}
-header.site.solid nav.main-links a{color:var(--ink-soft);}
-nav.main-links a:hover{color:var(--blue-bright);}
-nav.main-links a.active{color:var(--cream);}
-header.site.solid nav.main-links a.active{color:var(--ink);}
-nav.main-links a.active::after{content:""; position:absolute; left:0; right:0; bottom:-4px; height:2px; background:var(--maroon); border-radius:2px;}
-.nav-actions{display:flex; align-items:center; gap:18px;}
+
+/* nav.main-links: a full-screen overlay menu by default (opened via the
+   burger), except on desktop while still over the transparent hero, where
+   it shows inline instead */
+nav.main-links{
+  position:fixed; top:0; right:0; bottom:0; left:0; background:var(--paper); z-index:90;
+  display:flex; flex-direction:column; align-items:flex-start; justify-content:center; gap:0;
+  padding:0 40px; opacity:0; transform:translateY(-8px); pointer-events:none;
+  transition:opacity 220ms, transform 220ms;
+}
+nav.main-links a{width:100%; max-width:360px; padding:16px 0; border-bottom:1px solid var(--paper-line); font-size:1.3rem; font-weight:500; color:var(--ink-soft); position:relative;}
+nav.main-links a:hover{color:var(--maroon);}
+nav.main-links a.active{color:var(--maroon);}
+body.nav-open nav.main-links{opacity:1; transform:translateY(0); pointer-events:auto;}
+
+@media (min-width:961px){
+  header.site:not(.solid) nav.main-links{
+    position:static; background:none; z-index:auto; padding:0;
+    flex-direction:row; align-items:center; gap:30px;
+    opacity:1; transform:none; pointer-events:auto; transition:none;
+  }
+  header.site:not(.solid) nav.main-links a{width:auto; max-width:none; padding:4px 0; border-bottom:none; font-size:.92rem; font-weight:500; color:var(--cream-soft);}
+  header.site:not(.solid) nav.main-links a:hover{color:var(--blue-bright);}
+  header.site:not(.solid) nav.main-links a.active{color:var(--cream);}
+  header.site:not(.solid) nav.main-links a.active::after{content:""; position:absolute; left:0; right:0; bottom:-4px; height:2px; background:var(--maroon); border-radius:2px;}
+}
+
+/* owner icon + "Contactar" float persistently, never hidden by the burger/menu state */
+.nav-actions{display:flex; align-items:center; gap:18px; position:relative; z-index:100;}
 .nav-cta{display:flex; align-items:center; gap:18px;}
 .nav-owner{display:inline-flex; color:var(--cream-soft); transition:color 180ms;}
 header.site.solid .nav-owner{color:var(--ink-soft);}
@@ -167,22 +181,11 @@ header.site.solid .nav-owner{color:var(--ink-soft);}
 .burger{display:none; background:none; border:none; cursor:pointer; padding:6px;}
 .burger span{display:block; width:22px; height:2px; background:var(--cream); margin:5px 0; transition:background 300ms;}
 header.site.solid .burger span{background:var(--ink);}
+@media (min-width:961px){ header.site.solid .burger{display:block;} }
 
 @media (max-width:960px){
-  nav.main-links{
-    position:fixed; top:60px; right:0; bottom:0; left:0; background:var(--paper);
-    flex-direction:column; align-items:flex-start; padding:28px 24px; gap:0;
-    transform:translateY(-8px); opacity:0; pointer-events:none;
-    transition:opacity 220ms, transform 220ms; overflow-y:auto;
-  }
-  nav.main-links a{width:100%; padding:15px 0; border-bottom:1px solid var(--paper-line); font-size:1.1rem; color:var(--ink-soft) !important;}
-  body.nav-open nav.main-links{opacity:1; transform:translateY(0); pointer-events:auto;}
   .burger{display:block;}
   .nav-owner{display:none;}
-  /* backdrop-filter on header.site.solid creates a containing block for its
-     position:fixed descendants, which traps the full-screen nav overlay
-     inside the header's own (small) box instead of the viewport */
-  header.site.solid{backdrop-filter:none;}
 }
 
 /* ---------- footer ---------- */
@@ -319,10 +322,6 @@ input:focus, select:focus, textarea:focus{outline:none; border-color:var(--maroo
 .hero-content p.lede{color:var(--cream-soft); margin:0; max-width:38ch; font-size:.98rem; text-align:left;}
 .hero-actions{display:flex; gap:12px; flex-wrap:wrap; max-width:100%;}
 @media (max-width:720px){ .hero-content{padding-bottom:80px;} .hero-content-row{align-items:flex-start;} }
-.hero-scrollcue{position:absolute; bottom:30px; left:50%; transform:translateX(-50%); z-index:3; display:flex; flex-direction:column; align-items:center; gap:8px; font-family:'DM Mono',monospace; font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--cream-soft);}
-.hero-scrollcue .line{width:1px; height:24px; background:rgba(243,236,220,.3); position:relative; overflow:hidden;}
-.hero-scrollcue .line::after{content:""; position:absolute; top:-100%; left:0; width:100%; height:100%; background:var(--gold); animation:scrolldown 1.7s ease-in-out infinite;}
-@keyframes scrolldown{0%{top:-100%;} 60%{top:100%;} 100%{top:100%;}}
 
 /* ============================================================
    FEATURE SLIDE — full-viewport moment reached by scrolling
