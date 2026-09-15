@@ -143,10 +143,15 @@ header.site.solid{
 }
 .nav-row{display:flex; align-items:center; justify-content:space-between; gap:24px;}
 .logo{display:flex; flex-direction:column; align-items:flex-start; gap:5px; line-height:1;}
-.logo img{height:22px; width:auto; transition:filter 300ms;}
-header.site:not(.solid) .logo img{filter:brightness(0) invert(1);}
+.logo-full{height:22px; width:auto; transition:filter 300ms;}
+.logo-mark{display:none; height:30px; width:auto;}
+header.site:not(.solid) .logo-full{filter:brightness(0) invert(1);}
+header.site.solid .logo-full, header.site.solid .logo-tag{display:none;}
+header.site.solid .logo-mark{display:block;}
 .logo-tag{font-family:'DM Mono',monospace; font-size:.58rem; letter-spacing:.08em; text-transform:uppercase; color:var(--cream-soft); transition:color 300ms; white-space:nowrap;}
-header.site.solid .logo-tag{color:var(--ink-soft);}
+nav.main-links, .nav-cta{transition:opacity 240ms ease, transform 240ms ease;}
+header.site.nav-hidden nav.main-links, header.site.nav-hidden .nav-cta{opacity:0; transform:translateY(-10px); pointer-events:none;}
+body.nav-open header.site.nav-hidden nav.main-links{opacity:1; transform:none; pointer-events:auto;}
 nav.main-links{display:flex; align-items:center; gap:30px; font-size:.92rem; font-weight:500;}
 nav.main-links a{color:var(--cream-soft); transition:color 180ms; position:relative; padding:4px 0;}
 header.site.solid nav.main-links a{color:var(--ink-soft);}
@@ -154,8 +159,9 @@ nav.main-links a:hover{color:var(--blue-bright);}
 nav.main-links a.active{color:var(--cream);}
 header.site.solid nav.main-links a.active{color:var(--ink);}
 nav.main-links a.active::after{content:""; position:absolute; left:0; right:0; bottom:-4px; height:2px; background:var(--maroon); border-radius:2px;}
-.nav-actions{display:flex; align-items:center; gap:14px;}
-.nav-owner{font-family:'DM Mono',monospace; font-size:.76rem; color:var(--cream-soft);}
+.nav-actions{display:flex; align-items:center; gap:18px;}
+.nav-cta{display:flex; align-items:center; gap:18px;}
+.nav-owner{display:inline-flex; color:var(--cream-soft); transition:color 180ms;}
 header.site.solid .nav-owner{color:var(--ink-soft);}
 .nav-owner:hover{color:var(--blue-bright);}
 .burger{display:none; background:none; border:none; cursor:pointer; padding:6px;}
@@ -164,7 +170,7 @@ header.site.solid .burger span{background:var(--ink);}
 
 @media (max-width:960px){
   nav.main-links{
-    position:fixed; inset:60px 0 0 0; background:var(--paper);
+    position:fixed; top:60px; right:0; bottom:0; left:0; background:var(--paper);
     flex-direction:column; align-items:flex-start; padding:28px 24px; gap:0;
     transform:translateY(-8px); opacity:0; pointer-events:none;
     transition:opacity 220ms, transform 220ms; overflow-y:auto;
@@ -173,6 +179,10 @@ header.site.solid .burger span{background:var(--ink);}
   body.nav-open nav.main-links{opacity:1; transform:translateY(0); pointer-events:auto;}
   .burger{display:block;}
   .nav-owner{display:none;}
+  /* backdrop-filter on header.site.solid creates a containing block for its
+     position:fixed descendants, which traps the full-screen nav overlay
+     inside the header's own (small) box instead of the viewport */
+  header.site.solid{backdrop-filter:none;}
 }
 
 /* ---------- footer ---------- */
@@ -299,12 +309,14 @@ input:focus, select:focus, textarea:focus{outline:none; border-color:var(--maroo
 .hero-video video{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 1.6s ease;}
 .hero-video video.active{opacity:1;}
 .hero-scrim{position:absolute; inset:0; background:linear-gradient(180deg, rgba(20,16,9,.55) 0%, rgba(20,16,9,.2) 40%, rgba(20,16,9,.8) 100%); pointer-events:none;}
-.hero-content{position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:center; text-align:center;}
-.hero-content .eyebrow{color:var(--gold); justify-content:center;}
-.hero-content .eyebrow::before{display:none;}
-.hero-content h1{color:var(--cream); font-size:clamp(2.6rem,6.4vw,5.2rem); margin:0 auto 22px;}
-.hero-content p.lede{color:var(--cream-soft); margin:0 auto 30px; max-width:46ch;}
-.hero-actions{display:flex; gap:16px; justify-content:center; flex-wrap:wrap;}
+.hero-content{position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:flex-end; padding-bottom:100px;}
+.hero-content-row{display:flex; justify-content:space-between; align-items:flex-end; gap:40px; flex-wrap:wrap;}
+.hero-text{max-width:520px;}
+.hero-content .eyebrow{color:var(--gold);}
+.hero-content h1{color:var(--cream); font-size:clamp(2rem,4.2vw,3.4rem); margin:0 0 14px;}
+.hero-content p.lede{color:var(--cream-soft); margin:0; max-width:40ch; text-align:left;}
+.hero-actions{display:flex; gap:14px; flex-wrap:wrap; max-width:100%;}
+@media (max-width:720px){ .hero-content{padding-bottom:80px;} .hero-content-row{align-items:flex-start;} }
 .hero-scrollcue{position:absolute; bottom:30px; left:50%; transform:translateX(-50%); z-index:3; display:flex; flex-direction:column; align-items:center; gap:8px; font-family:'DM Mono',monospace; font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--cream-soft);}
 .hero-scrollcue .line{width:1px; height:24px; background:rgba(243,236,220,.3); position:relative; overflow:hidden;}
 .hero-scrollcue .line::after{content:""; position:absolute; top:-100%; left:0; width:100%; height:100%; background:var(--gold); animation:scrolldown 1.7s ease-in-out infinite;}
@@ -327,20 +339,21 @@ input:focus, select:focus, textarea:focus{outline:none; border-color:var(--maroo
 /* ============================================================
    SECTORES — three business lines, relats-style count tiles
    ============================================================ */
-.sectors{display:grid; grid-template-columns:repeat(3,1fr); gap:2px; background:var(--void-line); border-radius:var(--r-l); overflow:hidden;}
+.sectors{display:grid; grid-template-columns:repeat(3,1fr); gap:2px; background:var(--paper-line); border-radius:var(--r-l); overflow:hidden;}
 .sector-tile{
-  position:relative; background:var(--void); color:var(--cream); padding:38px 30px; min-height:280px;
+  position:relative; background:var(--paper-raised); color:var(--ink); padding:38px 30px; min-height:280px;
   display:flex; flex-direction:column; justify-content:space-between; overflow:hidden;
 }
-.sector-tile img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.34; transition:opacity 400ms, transform 600ms cubic-bezier(.23,1,.32,1);}
-.sector-tile:hover img{opacity:.5; transform:scale(1.06);}
+.sector-tile img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.92; transition:opacity 400ms, transform 600ms cubic-bezier(.23,1,.32,1);}
+.sector-tile::after{content:""; position:absolute; inset:0; background:linear-gradient(0deg, var(--paper-raised) 0%, rgba(239,229,207,.6) 42%, rgba(239,229,207,0) 70%); pointer-events:none;}
+.sector-tile:hover img{opacity:1; transform:scale(1.06);}
 .sector-tile .top, .sector-tile .bottom{position:relative; z-index:2;}
-.sector-tile .eyebrow{color:var(--gold); margin-bottom:0;}
-.sector-tile .eyebrow::before{background:var(--gold);}
-.sector-tile .count{font-family:'Archivo',sans-serif; font-weight:800; font-size:2.6rem; color:var(--cream); display:block; line-height:1;}
-.sector-tile .count-label{font-size:.85rem; color:var(--cream-soft); margin-top:6px;}
-.sector-tile h3{color:var(--cream); font-size:1.3rem;}
-.sector-tile .more{font-size:.82rem; color:var(--gold); font-weight:600; display:inline-flex; align-items:center; gap:6px; margin-top:10px;}
+.sector-tile .top .eyebrow{color:var(--maroon); background:var(--paper); padding:5px 12px; border-radius:100px; margin-bottom:0;}
+.sector-tile .top .eyebrow::before{display:none;}
+.sector-tile .count{font-family:'Archivo',sans-serif; font-weight:800; font-size:2.6rem; color:var(--ink); display:block; line-height:1;}
+.sector-tile .count-label{font-size:.85rem; color:var(--ink-soft); margin-top:6px;}
+.sector-tile h3{color:var(--ink); font-size:1.3rem;}
+.sector-tile .more{font-size:.82rem; color:var(--maroon); font-weight:600; display:inline-flex; align-items:center; gap:6px; margin-top:10px;}
 @media (max-width:800px){ .sectors{grid-template-columns:1fr;} }
 
 /* ============================================================

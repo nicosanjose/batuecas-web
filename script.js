@@ -15,6 +15,25 @@ const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   onScroll();
 })();
 
+/* ---------- header: hide nav on scroll down, reveal on scroll up (once past hero) ---------- */
+(function () {
+  const header = document.querySelector('header.site');
+  if (!header) return;
+  let lastY = window.scrollY;
+  const onScroll = () => {
+    const y = window.scrollY;
+    if (!header.classList.contains('solid') || y < 80) {
+      header.classList.remove('nav-hidden');
+    } else if (y > lastY) {
+      header.classList.add('nav-hidden');
+    } else {
+      header.classList.remove('nav-hidden');
+    }
+    lastY = y;
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+})();
+
 /* ---------- hero: crossfade between property videos ---------- */
 (function () {
   const videos = document.querySelectorAll('.hero-video video.hero-bg');
