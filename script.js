@@ -83,24 +83,6 @@ const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   });
 })();
 
-/* ---------- showcase: click a project on the left, its photo
-   slides in on the right (reformas section) ---------- */
-(function () {
-  const showcase = document.querySelector('.showcase');
-  if (!showcase) return;
-  const items = showcase.querySelectorAll('.showcase-item');
-  const panels = showcase.querySelectorAll('.showcase-panel img');
-  items.forEach((item) => {
-    item.addEventListener('click', () => {
-      items.forEach((i) => i.classList.remove('active'));
-      panels.forEach((p) => p.classList.remove('active'));
-      item.classList.add('active');
-      const target = showcase.querySelector('.showcase-panel img[data-key="' + item.dataset.key + '"]');
-      target?.classList.add('active');
-    });
-  });
-})();
-
 /* ============================================================
    GSAP + Lenis: smooth scroll and generic scroll reveals.
    ============================================================ */

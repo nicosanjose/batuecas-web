@@ -230,13 +230,6 @@ section{padding-block:100px;}
 .tile h3{font-size:1.04rem; margin-bottom:8px;}
 .tile p{font-size:.9rem; margin-bottom:0;}
 
-/* ---------- testimonials ---------- */
-.testi{display:grid; grid-template-columns:220px 1fr; gap:28px; align-items:center; background:var(--paper-raised); border-radius:var(--r-l); padding:32px; margin-bottom:20px;}
-.testi img{border-radius:var(--r-m); aspect-ratio:1; object-fit:cover; width:100%;}
-.testi blockquote{margin:0 0 12px; font-family:'Archivo',serif; font-size:1.22rem; font-weight:600; line-height:1.35;}
-.testi cite{font-style:normal; font-size:.85rem; color:var(--ink-soft); font-family:'DM Mono',monospace;}
-@media (max-width:640px){ .testi{grid-template-columns:1fr;} .testi img{max-width:120px;} }
-
 /* ---------- CTA band ---------- */
 .cta-band{background:var(--void); color:var(--cream); border-radius:var(--r-l); padding:56px 46px; display:flex; align-items:center; justify-content:space-between; gap:32px; flex-wrap:wrap;}
 .cta-band h2{color:var(--cream);}
@@ -335,36 +328,10 @@ input:focus, select:focus, textarea:focus{outline:none; border-color:var(--maroo
 .sector-tile .more{font-size:.82rem; color:var(--maroon); font-weight:600; display:inline-flex; align-items:center; gap:6px; margin-top:10px;}
 @media (max-width:800px){ .sectors{grid-template-columns:1fr;} }
 
-/* ============================================================
-   SHOWCASE — reformas: list on the left, panel reveals from the right
-   ============================================================ */
-.showcase{display:grid; grid-template-columns:.85fr 1.15fr; gap:52px; align-items:stretch;}
-.showcase-list{display:flex; flex-direction:column;}
-.showcase-item{
-  all:unset; cursor:pointer; padding:22px 4px; border-top:1px solid var(--paper-line);
-  display:flex; align-items:baseline; gap:16px; transition:padding-left 220ms;
-}
-.showcase-list .showcase-item:last-child{border-bottom:1px solid var(--paper-line);}
-.showcase-item .idx{font-family:'DM Mono',monospace; font-size:.8rem; color:var(--ink-soft);}
-.showcase-item h3{font-size:1.15rem; color:var(--ink-soft); transition:color 220ms; flex:1;}
-.showcase-item p{font-size:.85rem; color:var(--ink-soft); margin:4px 0 0; max-width:40ch;}
-.showcase-item.active{padding-left:16px;}
-.showcase-item:focus-visible{outline:2px solid var(--blue-bright); outline-offset:2px;}
-.showcase-item.active h3{color:var(--maroon);}
-.showcase-item.active .idx{color:var(--maroon);}
-.showcase-panel{position:relative; border-radius:var(--r-l); overflow:hidden; background:var(--paper-raised); min-height:360px;}
-.showcase-panel img{
-  position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
-  opacity:0; transform:translateX(28px); transition:opacity 480ms cubic-bezier(.23,1,.32,1), transform 480ms cubic-bezier(.23,1,.32,1);
-}
-.showcase-panel img.active{opacity:1; transform:translateX(0);}
-@media (max-width:860px){ .showcase{grid-template-columns:1fr;} .showcase-panel{min-height:280px; order:-1;} }
-
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto;}
   .hero-video video{display:none;}
   .sector-tile img{transition:none;}
-  .showcase-panel img{transition:none;}
   .reveal{opacity:1 !important; transform:none !important;}
 }
 
