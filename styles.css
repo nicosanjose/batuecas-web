@@ -142,9 +142,11 @@ header.site.solid{
   padding-block:12px;
 }
 .nav-row{display:flex; align-items:center; justify-content:space-between; gap:24px;}
-.logo{display:flex; align-items:center; gap:10px;}
-.logo img{height:24px; width:auto; transition:filter 300ms;}
+.logo{display:flex; flex-direction:column; align-items:flex-start; gap:5px; line-height:1;}
+.logo img{height:22px; width:auto; transition:filter 300ms;}
 header.site:not(.solid) .logo img{filter:brightness(0) invert(1);}
+.logo-tag{font-family:'DM Mono',monospace; font-size:.58rem; letter-spacing:.08em; text-transform:uppercase; color:var(--cream-soft); transition:color 300ms; white-space:nowrap;}
+header.site.solid .logo-tag{color:var(--ink-soft);}
 nav.main-links{display:flex; align-items:center; gap:30px; font-size:.92rem; font-weight:500;}
 nav.main-links a{color:var(--cream-soft); transition:color 180ms; position:relative; padding:4px 0;}
 header.site.solid nav.main-links a{color:var(--ink-soft);}
@@ -293,8 +295,9 @@ input:focus, select:focus, textarea:focus{outline:none; border-color:var(--maroo
 /* ============================================================
    HERO — full-bleed video
    ============================================================ */
-.hero-video{position:relative; height:100vh; min-height:640px; overflow:hidden; background:var(--void);}
-.hero-video video, .hero-video .poster{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
+.hero-video{position:relative; height:100vh; min-height:640px; overflow:hidden; background:var(--void) url('assets/build/05-final.jpg') center/cover;}
+.hero-video video{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 1.6s ease;}
+.hero-video video.active{opacity:1;}
 .hero-scrim{position:absolute; inset:0; background:linear-gradient(180deg, rgba(20,16,9,.55) 0%, rgba(20,16,9,.2) 40%, rgba(20,16,9,.8) 100%); pointer-events:none;}
 .hero-content{position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:center; text-align:center;}
 .hero-content .eyebrow{color:var(--gold); justify-content:center;}

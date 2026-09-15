@@ -15,6 +15,18 @@ const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   onScroll();
 })();
 
+/* ---------- hero: crossfade between property videos ---------- */
+(function () {
+  const videos = document.querySelectorAll('.hero-video video.hero-bg');
+  if (videos.length < 2 || REDUCE) return;
+  let i = 0;
+  setInterval(() => {
+    videos[i].classList.remove('active');
+    i = (i + 1) % videos.length;
+    videos[i].classList.add('active');
+  }, 6000);
+})();
+
 /* ---------- mobile nav ---------- */
 (function () {
   const burger = document.querySelector('.burger');
