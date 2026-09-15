@@ -1,16 +1,21 @@
 const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/* ---------- header: transparent-over-hero -> solid on scroll ---------- */
+/* ---------- header: condense early in the hero, go "solid" (ink icons)
+   only once the page behind the header is actually light ---------- */
 (function () {
   const header = document.querySelector('header.site');
   if (!header) return;
   const hasHero = !!document.querySelector('.hero-video');
   if (!hasHero) {
-    header.classList.add('solid');
+    header.classList.add('condensed', 'solid');
     return;
   }
-  const threshold = () => window.innerHeight * 0.82;
-  const onScroll = () => header.classList.toggle('solid', window.scrollY > threshold());
+  const condensedThreshold = 80; // condense almost as soon as you start scrolling
+  const solidThreshold = () => window.innerHeight * 1.82; // past hero + feature-slide, into the light sections
+  const onScroll = () => {
+    header.classList.toggle('condensed', window.scrollY > condensedThreshold);
+    header.classList.toggle('solid', window.scrollY > solidThreshold());
+  };
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 })();

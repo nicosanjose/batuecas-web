@@ -114,24 +114,26 @@ header.site{
 .logo-full{height:22px; width:auto; transition:filter 300ms;}
 .logo-mark{display:none; height:26px; width:auto;}
 header.site:not(.solid) .logo-full{filter:brightness(0) invert(1);}
-header.site.solid .logo-full, header.site.solid .logo-tag{display:none;}
-header.site.solid .logo-mark{display:block;}
-header.site.solid .logo{background:var(--paper); padding:10px 14px; border-radius:16px; box-shadow:0 4px 16px rgba(27,20,15,.12);}
+header.site.condensed .logo-full, header.site.condensed .logo-tag{display:none;}
+header.site.condensed .logo-mark{display:block;}
+header.site.condensed .logo{background:var(--paper); padding:10px 14px; border-radius:16px; box-shadow:0 4px 16px rgba(27,20,15,.12);}
 .logo-tag{font-family:'DM Mono',monospace; font-size:.58rem; letter-spacing:.08em; text-transform:uppercase; color:var(--cream-soft); transition:color 300ms; white-space:nowrap;}
 
 /* nav.main-links: the inline row shown only on desktop while still over the
    transparent hero. It never becomes a fixed overlay itself — it just fades
-   in place — so crossing the "solid" threshold never flips its layout mode
-   (that flip is what caused the abrupt flash/jump). */
+   in place — so condensing never flips its layout mode (that flip is what
+   caused the abrupt flash/jump). ".condensed" fires quickly (a short scroll
+   into the hero); ".solid" fires later, once the page behind the header is
+   actually light, and only ever changes icon/text colour, never layout. */
 .nav-right{display:flex; align-items:center; gap:36px;}
 nav.main-links{display:none; align-items:center; gap:30px; font-size:.92rem; font-weight:500; opacity:1; transition:opacity 200ms;}
-nav.main-links a{color:var(--cream-soft); transition:color 180ms; position:relative; padding:4px 0;}
-nav.main-links a:hover{color:var(--blue-bright);}
+nav.main-links a{color:#fff; transition:color 180ms; position:relative; padding:4px 0;}
+nav.main-links a:hover{color:var(--cream);}
 nav.main-links a.active{color:var(--cream);}
 nav.main-links a.active::after{content:""; position:absolute; left:0; right:0; bottom:-4px; height:2px; background:var(--maroon); border-radius:2px;}
 @media (min-width:961px){
-  header.site:not(.solid) nav.main-links{display:flex;}
-  header.site.solid nav.main-links{opacity:0; pointer-events:none;}
+  header.site:not(.condensed) nav.main-links{display:flex;}
+  header.site.condensed nav.main-links{opacity:0; pointer-events:none;}
 }
 
 /* nav-overlay: the full-screen menu opened by the burger, at every width.
@@ -151,13 +153,13 @@ body.nav-open .nav-overlay{opacity:1; transform:translateY(0); pointer-events:au
 /* owner icon + "Contactar" float persistently, never hidden by the burger/menu state */
 .nav-actions{display:flex; align-items:center; gap:18px; position:relative; z-index:100;}
 .nav-cta{display:flex; align-items:center; gap:18px;}
-.nav-owner{display:inline-flex; color:var(--cream-soft); transition:color 180ms;}
+.nav-owner{display:inline-flex; color:#fff; transition:color 180ms;}
 header.site.solid .nav-owner{color:var(--ink-soft);}
-.nav-owner:hover{color:var(--blue-bright);}
+.nav-owner:hover{color:var(--cream);}
 .burger{display:none; background:none; border:none; cursor:pointer; padding:6px; position:relative; z-index:100;}
-.burger span{display:block; width:22px; height:2px; background:var(--cream); margin:5px 0; transition:background 300ms;}
+.burger span{display:block; width:22px; height:2px; background:#fff; margin:5px 0; transition:background 300ms;}
 header.site.solid .burger span{background:var(--ink);}
-@media (min-width:961px){ header.site.solid .burger{display:block;} }
+@media (min-width:961px){ header.site.condensed .burger{display:block;} }
 
 @media (max-width:960px){
   .burger{display:block;}
