@@ -16,15 +16,24 @@ const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     // Recalculate now that the page has settled into its final layout.
     if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
   };
-  if (REDUCE || typeof gsap === 'undefined') {
+
+  // Play once per browser session — not every time the visitor comes back
+  // to the home page (e.g. via the logo) within the same visit.
+  const PLAYED_KEY = 'batuecas-intro-played';
+  let alreadyPlayed = false;
+  try { alreadyPlayed = sessionStorage.getItem(PLAYED_KEY) === '1'; } catch (e) { /* storage blocked: just play it */ }
+
+  if (REDUCE || typeof gsap === 'undefined' || alreadyPlayed) {
     finish();
     return;
   }
+  try { sessionStorage.setItem(PLAYED_KEY, '1'); } catch (e) { /* ignore */ }
+
   gsap.timeline({ onComplete: finish })
     .fromTo('.intro-logo', { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.6, ease: 'power2.out' })
     .to('.intro-logo', { opacity: 0, duration: 0.5, ease: 'power2.in' }, '+=0.9')
-    .to('.hero-video', { opacity: 1, duration: 0.2 }, '<')
-    .to('.hero-video', { scale: 1, borderRadius: 0, duration: 1.4, ease: 'power3.inOut' }, '-=0.05')
+    .to('.hero-video', { opacity: 1, duration: 0.3, ease: 'power1.out' })
+    .to('.hero-video', { scale: 1, borderRadius: 0, duration: 1.4, ease: 'power3.inOut' }, '-=0.1')
     .to(overlay, { opacity: 0, duration: 0.6, ease: 'power2.out' }, '-=0.5')
     .to('.hero-content', { opacity: 1, duration: 0.6, ease: 'power2.out' }, '-=0.4')
     .set('.hero-video', { clearProps: 'transform,opacity,zIndex,position,borderRadius' });
