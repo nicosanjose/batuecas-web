@@ -295,26 +295,24 @@ input:focus, select:focus, textarea:focus{outline:none; border-color:var(--maroo
 @media (max-width:720px){ .hero-content{padding-bottom:40px;} .hero-content-row{align-items:flex-start;} }
 
 /* ============================================================
-   BUILD REVEAL — pinned scroll: exploded materials (left half) resolve
-   into the finished home, then a headline (right half) fills in from
-   gray to black, line by line, as you keep scrolling
+   BUILD REVEAL — pinned scroll: a video of the exploded materials
+   assembling into the finished home (left half) is scrubbed by scroll
+   position, then a huge headline (right half) fills in from gray to
+   black, line by line, as you keep scrolling
    ============================================================ */
 .build-reveal{position:relative; background:#fff;}
 .build-stage{position:relative; height:100vh; min-height:600px; overflow:hidden; display:grid; grid-template-columns:1fr 1fr; align-items:center;}
 .build-media{position:relative; height:100%; display:grid; place-items:center; padding:0 24px;}
-.build-img{position:absolute; object-fit:contain; max-width:100%;}
-.build-exploded{width:88%; max-height:62vh;}
-.build-assembled{width:60%; max-height:38vh; border-radius:var(--r-m); opacity:0;}
-.build-text-block{padding:0 7vw 0 0;}
-.build-line{display:block; font-family:'Archivo',sans-serif; font-weight:700; font-size:clamp(1.9rem,4vw,3.4rem); line-height:1.1; color:rgba(27,20,15,.24);}
+.build-video{width:100%; max-width:640px; max-height:74vh; object-fit:contain;}
+.build-text-block{padding:0 5vw 0 0;}
+.build-line{display:block; font-family:'Archivo',sans-serif; font-weight:800; letter-spacing:-.01em; font-size:clamp(2.6rem,6.6vw,6.4rem); line-height:1.02; color:rgba(27,20,15,.24);}
 .build-line.accent{color:var(--maroon);}
 @media (max-width:860px){
   .build-stage{grid-template-columns:1fr; grid-template-rows:auto auto; padding-top:24px;}
-  .build-media{height:40vh; padding:0 12px;}
-  .build-exploded{width:80vw; max-height:36vh;}
-  .build-assembled{width:56vw; max-height:22vh;}
+  .build-media{height:38vh; padding:0 12px;}
+  .build-video{max-height:36vh;}
   .build-text-block{padding:20px 8vw 0;}
-  .build-line{font-size:clamp(1.5rem,7vw,2.1rem);}
+  .build-line{font-size:clamp(1.8rem,9vw,2.6rem);}
 }
 
 /* ============================================================

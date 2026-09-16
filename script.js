@@ -94,9 +94,10 @@ const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       el.style.opacity = '1';
       el.style.transform = 'none';
     });
-    document.querySelector('.build-exploded')?.style.setProperty('display', 'none');
-    const assembled = document.querySelector('.build-assembled');
-    if (assembled) assembled.style.opacity = '1';
+    const video = document.querySelector('.build-video');
+    if (video) {
+      video.addEventListener('loadedmetadata', () => { video.currentTime = video.duration; });
+    }
     document.querySelectorAll('.build-line:not(.accent)').forEach((el) => { el.style.color = 'rgba(27,20,15,1)'; });
     return;
   }
@@ -124,23 +125,30 @@ const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   });
 
   // Build reveal: pin the stage while scrolling through it. First, the
-  // exploded materials (left half) crossfade into the finished home.
-  // Then, still pinned, the headline (right half) fills in from gray to
-  // black one line at a time. Skipped for reduced motion — final state
-  // shown directly instead (see the REDUCE branch below).
+  // house-assembly video (left half) is scrubbed frame-by-frame by scroll
+  // position — no autoplay, the scroll position IS the playhead. Then,
+  // still pinned, the headline (right half) fills in from gray to black
+  // one line at a time. Skipped for reduced motion — final state shown
+  // directly instead (see the REDUCE branch below).
   const buildStage = document.querySelector('.build-stage');
-  if (buildStage && !REDUCE) {
-    gsap.timeline({
-      scrollTrigger: {
-        trigger: '.build-reveal', start: 'top top', end: '+=250%', pin: buildStage, scrub: 0.4,
-      },
-    })
-      .to('.build-exploded', { opacity: 0, scale: 0.88, ease: 'none' }, 0)
-      .fromTo('.build-assembled', { opacity: 0, scale: 1.1 }, { opacity: 1, scale: 1, ease: 'none' }, 0)
-      .to('.build-line:not(.accent)', { color: 'rgba(27,20,15,1)', stagger: 0.35, ease: 'none' }, 0.55);
-  } else if (buildStage) {
-    document.querySelector('.build-exploded').style.display = 'none';
-    document.querySelector('.build-assembled').style.opacity = '1';
+  const buildVideo = document.querySelector('.build-video');
+  if (buildStage && buildVideo && !REDUCE) {
+    const setupBuildTimeline = () => {
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: '.build-reveal', start: 'top top', end: '+=250%', pin: buildStage, scrub: 0.4,
+        },
+      })
+        .to(buildVideo, { currentTime: buildVideo.duration, ease: 'none', duration: 1.5 }, 0)
+        .to('.build-line:not(.accent)', { color: 'rgba(27,20,15,1)', stagger: 0.35, ease: 'none' }, 1.6);
+    };
+    if (buildVideo.readyState >= 1) {
+      setupBuildTimeline();
+    } else {
+      buildVideo.addEventListener('loadedmetadata', setupBuildTimeline, { once: true });
+    }
+  } else if (buildStage && buildVideo) {
+    buildVideo.addEventListener('loadedmetadata', () => { buildVideo.currentTime = buildVideo.duration; }, { once: true });
     document.querySelectorAll('.build-line:not(.accent)').forEach((el) => { el.style.color = 'rgba(27,20,15,1)'; });
   }
 })();
