@@ -326,7 +326,7 @@ input:focus, select:focus, textarea:focus{outline:none; border-color:var(--maroo
    ============================================================ */
 .build-reveal{position:relative; background:#F6F6F6; padding-block:0;}
 .build-stage{position:relative; height:100vh; min-height:600px; overflow:hidden; display:grid; grid-template-columns:auto 1fr; grid-auto-rows:100%; align-items:stretch; background:#F6F6F6;}
-.build-media{position:relative; height:100%; display:flex; align-items:center; justify-content:center;}
+.build-media{position:relative; height:100%; display:flex; align-items:center; justify-content:center; padding-left:3vw;}
 .build-exploded-img{height:100%; width:auto; max-width:none; object-fit:contain;}
 .build-text-block{display:flex; align-items:center; justify-content:flex-end; padding:0 4vw 0 2vw;}
 .build-lines{font-family:'Hanken Grotesk',sans-serif; font-weight:400; letter-spacing:-.01em; font-size:clamp(3.2rem,10vw,10rem); line-height:1.03;}
