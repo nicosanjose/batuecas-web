@@ -94,10 +94,6 @@ const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       el.style.opacity = '1';
       el.style.transform = 'none';
     });
-    const video = document.querySelector('.build-video');
-    if (video) {
-      video.addEventListener('loadedmetadata', () => { video.currentTime = video.duration; });
-    }
     document.querySelectorAll('.build-line:not(.accent)').forEach((el) => { el.style.color = 'rgba(27,20,15,1)'; });
     return;
   }
@@ -124,31 +120,18 @@ const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     });
   });
 
-  // Build reveal: pin the stage while scrolling through it. First, the
-  // house-assembly video (left half) is scrubbed frame-by-frame by scroll
-  // position — no autoplay, the scroll position IS the playhead. Then,
-  // still pinned, the headline (right half) fills in from gray to black
-  // one line at a time. Skipped for reduced motion — final state shown
-  // directly instead (see the REDUCE branch below).
+  // Build reveal: pin the stage while scrolling through it. The exploded
+  // materials image sits still on the left; the headline on the right
+  // fills in from gray to black, one line at a time, as you scroll.
+  // Skipped for reduced motion — final (black) state shown directly.
   const buildStage = document.querySelector('.build-stage');
-  const buildVideo = document.querySelector('.build-video');
-  if (buildStage && buildVideo && !REDUCE) {
-    const setupBuildTimeline = () => {
-      gsap.timeline({
-        scrollTrigger: {
-          trigger: '.build-reveal', start: 'top top', end: '+=250%', pin: buildStage, scrub: 0.4,
-        },
-      })
-        .to(buildVideo, { currentTime: buildVideo.duration, ease: 'none', duration: 1.5 }, 0)
-        .to('.build-line:not(.accent)', { color: 'rgba(27,20,15,1)', stagger: 0.35, ease: 'none' }, 1.6);
-    };
-    if (buildVideo.readyState >= 1) {
-      setupBuildTimeline();
-    } else {
-      buildVideo.addEventListener('loadedmetadata', setupBuildTimeline, { once: true });
-    }
-  } else if (buildStage && buildVideo) {
-    buildVideo.addEventListener('loadedmetadata', () => { buildVideo.currentTime = buildVideo.duration; }, { once: true });
+  if (buildStage && !REDUCE) {
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: '.build-reveal', start: 'top top', end: '+=160%', pin: buildStage, scrub: 0.4,
+      },
+    }).to('.build-line:not(.accent)', { color: 'rgba(27,20,15,1)', stagger: 0.35, ease: 'none' });
+  } else if (buildStage) {
     document.querySelectorAll('.build-line:not(.accent)').forEach((el) => { el.style.color = 'rgba(27,20,15,1)'; });
   }
 })();
