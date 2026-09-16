@@ -101,6 +101,22 @@ p{margin:0 0 1em; max-width:62ch; color:var(--ink);}
 .btn-sm{padding:10px 18px; font-size:.82rem;}
 .btn:focus-visible{outline:2px solid var(--blue-bright); outline-offset:2px;}
 
+/* ---------- cinematic intro (home page only) ----------
+   Sequence: dark curtain + centered logo -> logo fades -> the REAL
+   hero-video section (already in the DOM, scaled down to a small
+   centered box) fades in and scales up to fill the viewport -> curtain
+   and content reveal. Scaling the actual hero, instead of a stand-in
+   duplicate, is what guarantees "exactly the same visual content" the
+   brief asks for, with no separate element to keep in sync. */
+body.has-intro{overflow:hidden;}
+body.has-intro .hero-video{transform:scale(.15); opacity:0; transform-origin:50% 50%; position:relative; z-index:9999;}
+body.has-intro .hero-content{opacity:0; pointer-events:none;}
+.intro-overlay{
+  position:fixed; inset:0; z-index:9998; background:var(--void);
+  display:flex; align-items:center; justify-content:center;
+}
+.intro-logo{width:min(240px,52vw); height:auto; opacity:0; filter:brightness(0) invert(1);}
+
 /* ---------- header ---------- */
 /* no full-width bar: header itself stays transparent always, the logo and
    the contact cluster float as their own independent badges/pills instead

@@ -1,5 +1,30 @@
 const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+/* ---------- cinematic intro (home page only): dark curtain + logo,
+   then the real hero-video section (scaled down small) fades in and
+   expands to full size. Skipped entirely for reduced motion or if the
+   GSAP CDN failed — the page must never stay stuck mid-intro. ---------- */
+(function () {
+  const overlay = document.querySelector('.intro-overlay');
+  if (!overlay) return;
+  const finish = () => {
+    document.body.classList.remove('has-intro');
+    overlay.remove();
+  };
+  if (REDUCE || typeof gsap === 'undefined') {
+    finish();
+    return;
+  }
+  gsap.timeline({ onComplete: finish })
+    .fromTo('.intro-logo', { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.6, ease: 'power2.out' })
+    .to('.intro-logo', { opacity: 0, duration: 0.5, ease: 'power2.in' }, '+=0.9')
+    .to('.hero-video', { opacity: 1, duration: 0.2 }, '<')
+    .to('.hero-video', { scale: 1, duration: 1.4, ease: 'power3.inOut' }, '-=0.05')
+    .to(overlay, { opacity: 0, duration: 0.6, ease: 'power2.out' }, '-=0.5')
+    .to('.hero-content', { opacity: 1, duration: 0.6, ease: 'power2.out' }, '-=0.4')
+    .set('.hero-video', { clearProps: 'transform,opacity,zIndex,position' });
+})();
+
 /* ---------- header: condense early in the hero, go "solid" (ink icons)
    only once the page behind the header is actually light ---------- */
 (function () {
