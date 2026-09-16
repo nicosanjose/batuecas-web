@@ -59,6 +59,58 @@
     </div>
   </div>
 
+  <section style="background:var(--paper-raised); border-top:1px solid var(--paper-line); border-bottom:1px solid var(--paper-line);">
+    <div class="container" style="max-width:900px;">
+      <div class="section-head center reveal">
+        <span class="eyebrow">Antes de contactarnos</span>
+        <h2>Calcula una estimación orientativa</h2>
+        <p class="lede center">Responde a estas preguntas y hazte una primera idea del valor de tu vivienda. Es solo una referencia — para el precio real de mercado, pide la valoración gratuita de nuestro equipo aquí abajo.</p>
+      </div>
+      <div class="tile reveal" style="background:var(--paper); max-width:640px; margin:0 auto;">
+        <div class="form-grid">
+          <div class="field">
+            <label for="calc-zona">Zona</label>
+            <select id="calc-zona">
+              <option value="6500">Salamanca</option>
+              <option value="5800">Centro</option>
+              <option value="5600">Chamberí</option>
+              <option value="5200" selected>La Latina / Centro histórico</option>
+              <option value="5000">Retiro</option>
+              <option value="4800">Chamartín</option>
+              <option value="3800">Otros barrios de Madrid</option>
+            </select>
+          </div>
+          <div class="field"><label for="calc-m2">Superficie (m²)</label><input type="number" id="calc-m2" placeholder="80" min="15" max="1000"></div>
+        </div>
+        <div class="form-grid">
+          <div class="field">
+            <label for="calc-tipo">Tipo de inmueble</label>
+            <select id="calc-tipo">
+              <option value="1">Piso</option>
+              <option value="1.12">Ático</option>
+              <option value="1.05">Casa / chalet</option>
+              <option value="0.9">Estudio</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="calc-estado">Estado</label>
+            <select id="calc-estado">
+              <option value="0.85">A reformar</option>
+              <option value="1" selected>Buen estado</option>
+              <option value="1.15">Reformado / a estrenar</option>
+            </select>
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary" id="calc-btn" style="width:100%; justify-content:center;">Calcular estimación</button>
+        <div id="calc-resultado" class="calc-result" hidden>
+          <span class="calc-result-label">Valor estimado</span>
+          <span class="calc-result-value tabular" id="calc-valor">—</span>
+          <p class="calc-result-note">Estimación orientativa basada en precios medios por zona — no sustituye una valoración profesional. <a href="#formulario" style="color:var(--maroon); font-weight:600;">Pide la valoración real y gratuita de nuestro equipo ↓</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section id="formulario">
     <div class="container grid-2 valuation-grid" style="align-items:start;">
       <div class="reveal">

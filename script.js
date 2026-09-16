@@ -110,6 +110,33 @@ const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   });
 })();
 
+/* ---------- valor-de-mi-vivienda: quick estimate calculator (demo) ---------- */
+(function () {
+  const btn = document.querySelector('#calc-btn');
+  if (!btn) return;
+  const zona = document.querySelector('#calc-zona');
+  const m2 = document.querySelector('#calc-m2');
+  const tipo = document.querySelector('#calc-tipo');
+  const estado = document.querySelector('#calc-estado');
+  const resultado = document.querySelector('#calc-resultado');
+  const valorEl = document.querySelector('#calc-valor');
+  const formatEUR = (n) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
+
+  btn.addEventListener('click', () => {
+    const superficie = parseFloat(m2.value);
+    if (!superficie || superficie <= 0) {
+      m2.focus();
+      return;
+    }
+    const base = parseFloat(zona.value) * superficie * parseFloat(tipo.value) * parseFloat(estado.value);
+    const low = Math.round((base * 0.9) / 1000) * 1000;
+    const high = Math.round((base * 1.1) / 1000) * 1000;
+    valorEl.textContent = formatEUR(low) + ' – ' + formatEUR(high);
+    resultado.hidden = false;
+    resultado.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+})();
+
 /* ---------- FAQ accordion ---------- */
 (function () {
   document.querySelectorAll('.faq-list').forEach((list) => {
