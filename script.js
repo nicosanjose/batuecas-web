@@ -95,9 +95,9 @@ const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       el.style.transform = 'none';
     });
     document.querySelector('.build-exploded')?.style.setProperty('display', 'none');
-    document.querySelectorAll('.build-assembled, .build-text').forEach((el) => {
-      el.style.opacity = '1';
-    });
+    const assembled = document.querySelector('.build-assembled');
+    if (assembled) assembled.style.opacity = '1';
+    document.querySelectorAll('.build-line:not(.accent)').forEach((el) => { el.style.color = 'rgba(27,20,15,1)'; });
     return;
   }
   gsap.registerPlugin(ScrollTrigger);
@@ -123,10 +123,11 @@ const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     });
   });
 
-  // Build reveal: pin the stage while scrolling through it, crossfade the
-  // exploded materials into the finished home, then wipe in the two text
-  // blocks left-to-right. Skipped for reduced motion — final state shown
-  // directly instead (see the REDUCE branch below).
+  // Build reveal: pin the stage while scrolling through it. First, the
+  // exploded materials (left half) crossfade into the finished home.
+  // Then, still pinned, the headline (right half) fills in from gray to
+  // black one line at a time. Skipped for reduced motion — final state
+  // shown directly instead (see the REDUCE branch below).
   const buildStage = document.querySelector('.build-stage');
   if (buildStage && !REDUCE) {
     gsap.timeline({
@@ -136,10 +137,10 @@ const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     })
       .to('.build-exploded', { opacity: 0, scale: 0.88, ease: 'none' }, 0)
       .fromTo('.build-assembled', { opacity: 0, scale: 1.1 }, { opacity: 1, scale: 1, ease: 'none' }, 0)
-      .fromTo('.build-text-tl', { clipPath: 'inset(0 100% 0 0)', opacity: 1 }, { clipPath: 'inset(0 0% 0 0)', ease: 'none' }, 0.55)
-      .fromTo('.build-text-br', { clipPath: 'inset(0 100% 0 0)', opacity: 1 }, { clipPath: 'inset(0 0% 0 0)', ease: 'none' }, 0.72);
+      .to('.build-line:not(.accent)', { color: 'rgba(27,20,15,1)', stagger: 0.35, ease: 'none' }, 0.55);
   } else if (buildStage) {
     document.querySelector('.build-exploded').style.display = 'none';
-    document.querySelectorAll('.build-assembled, .build-text').forEach((el) => { el.style.opacity = '1'; });
+    document.querySelector('.build-assembled').style.opacity = '1';
+    document.querySelectorAll('.build-line:not(.accent)').forEach((el) => { el.style.color = 'rgba(27,20,15,1)'; });
   }
 })();
