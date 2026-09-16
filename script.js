@@ -10,6 +10,11 @@ const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const finish = () => {
     document.body.classList.remove('has-intro');
     overlay.remove();
+    // Other ScrollTrigger instances (the build-reveal pin, in particular)
+    // were measured while has-intro's overflow:hidden was still on the
+    // body, i.e. against a slightly different layout/scrollbar state.
+    // Recalculate now that the page has settled into its final layout.
+    if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
   };
   if (REDUCE || typeof gsap === 'undefined') {
     finish();

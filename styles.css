@@ -318,7 +318,7 @@ input:focus, select:focus, textarea:focus{outline:none; border-color:var(--maroo
    sits still while a huge, thin headline (right) fills in from gray to
    black, line by line, as you keep scrolling
    ============================================================ */
-.build-reveal{position:relative; background:#F6F6F6;}
+.build-reveal{position:relative; background:#F6F6F6; padding-block:0;}
 .build-stage{position:relative; height:100vh; min-height:600px; overflow:hidden; display:grid; grid-template-columns:auto 1fr; grid-auto-rows:100%; align-items:stretch; background:#F6F6F6;}
 .build-media{position:relative; height:100%; display:flex; align-items:center; justify-content:center;}
 .build-exploded-img{height:100%; width:auto; max-width:none; object-fit:contain;}
