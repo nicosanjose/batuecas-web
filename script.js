@@ -117,6 +117,27 @@ const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
    GSAP + Lenis: smooth scroll and generic scroll reveals.
    ============================================================ */
 (function () {
+  // Wrap every letter of the build-reveal headline in its own span so the
+  // gray-to-black fill can be staggered character-by-character rather than
+  // line-by-line. The trailing accent dot is a separate element already
+  // and is left untouched.
+  document.querySelectorAll('.build-chars').forEach((container) => {
+    const nodes = Array.from(container.childNodes);
+    container.innerHTML = '';
+    nodes.forEach((node) => {
+      if (node.nodeType === Node.TEXT_NODE) {
+        node.textContent.split('').forEach((ch) => {
+          const span = document.createElement('span');
+          span.className = 'build-char';
+          span.textContent = ch;
+          container.appendChild(span);
+        });
+      } else {
+        container.appendChild(node);
+      }
+    });
+  });
+
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
     // A CDN failed to load: reveal everything immediately rather than
     // leaving .reveal elements stuck at opacity:0 forever.
@@ -124,7 +145,7 @@ const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       el.style.opacity = '1';
       el.style.transform = 'none';
     });
-    document.querySelectorAll('.build-line:not(.accent)').forEach((el) => { el.style.color = 'rgba(27,20,15,1)'; });
+    document.querySelectorAll('.build-char').forEach((el) => { el.style.color = 'rgba(27,20,15,1)'; });
     return;
   }
   gsap.registerPlugin(ScrollTrigger);
@@ -160,8 +181,8 @@ const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       scrollTrigger: {
         trigger: '.build-reveal', start: 'top top', end: '+=160%', pin: buildStage, scrub: 0.4,
       },
-    }).to('.build-line:not(.accent)', { color: 'rgba(27,20,15,1)', stagger: 0.35, ease: 'none' });
+    }).to('.build-char', { color: 'rgba(27,20,15,1)', stagger: 0.045, ease: 'none' });
   } else if (buildStage) {
-    document.querySelectorAll('.build-line:not(.accent)').forEach((el) => { el.style.color = 'rgba(27,20,15,1)'; });
+    document.querySelectorAll('.build-char').forEach((el) => { el.style.color = 'rgba(27,20,15,1)'; });
   }
 })();
